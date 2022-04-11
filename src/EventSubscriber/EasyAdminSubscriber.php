@@ -2,6 +2,7 @@
 
 namespace App\EventSubscriber;
 use App\Entity\User;
+use App\Entity\Tasks;
 
 use App\Model\TimestampedInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
@@ -52,7 +53,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
            return;
        }
 
-       $entity->setCreatedAt(new \DateTime());
+       $entity->setCreatedAt(new \DateTime('YYYY-MM-DD HH:MM:SS'));
     }
 
     public function setEntityUpdatedAt(BeforeEntityUpdatedEvent $event)
@@ -63,7 +64,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $entity->setUpdatedAt(new \DateTime());
+        $entity->setUpdatedAt(new \DateTime('YYYY-MM-DD HH:MM:SS'));
     }
     
 
