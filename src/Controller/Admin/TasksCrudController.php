@@ -6,6 +6,7 @@ use App\Entity\Tasks;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
@@ -26,7 +27,13 @@ class TasksCrudController extends AbstractCrudController
            
             yield TextField::new('task');
 
-            yield TextField::new('status');
+            //yield TextField::new('status');
+            yield ChoiceField::new('status')->setChoices([
+                'In progress' => 'en cours',
+                'Close' => 'fini',
+                'Canceled' => 'annulé',
+                'Pending' => 'en attente',
+            ]);
 
             if (Crud::PAGE_INDEX === $pageName) {
                 yield DateTimeField::new('createdAt');
