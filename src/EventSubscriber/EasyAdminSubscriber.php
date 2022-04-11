@@ -37,7 +37,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     public function setEntityLogger(BeforeCrudActionEvent $event)
     {
-        //$crud = $event->getAdminContext()->getCrud();
+        //TODO : voir a specifier le type d'action réalisée
+        
         $userConnect = $event->getAdminContext()->getUser();
         
        $this->logger->info("Action sur module admin par : ".$userConnect);
@@ -69,29 +70,25 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public function encodePassword(BeforeEntityUpdatedEvent $event)
     {
         $user = $event->getEntityInstance();
-        /*if ($user instanceof User ) {
-            $user->setPassword($this->passwordEncoder->encodePassword($user, $user->getPlainPassword()));
-        }*/
+        if (!$user instanceof User ) {
+            return;
+        }
         $this->setPassword($user);
+
     }
 
     public function setPassword(User $entity): void
       {
           $pass = $entity->getPassword();
 
-          //$entity->setPassword($this->userPasswordHasher->hashPassword($pass));
+          // encrypter le mot de passe
           $entity->setPassword(
             $this->passwordEncoder->hashPassword(
                     $entity,
                     $pass
                 )
             );
-          /*$entity->setPassword(
-              $this->passwordEncoder->encodePassword(
-                  $entity,
-                  $pass
-              )
-          );*/
+          //ecrire dans la base de données
           $this->entityManager->persist($entity);
           $this->entityManager->flush();
       }
